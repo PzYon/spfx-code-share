@@ -1,39 +1,45 @@
-import { override } from '@microsoft/decorators';
-import { Log } from '@microsoft/sp-core-library';
+import { override } from "@microsoft/decorators";
 import {
-  BaseApplicationCustomizer
-} from '@microsoft/sp-application-base';
-import { Dialog } from '@microsoft/sp-dialog';
+  BaseApplicationCustomizer,
+  PlaceholderContent,
+  PlaceholderName
+} from "@microsoft/sp-application-base";
 
-import * as strings from 'MyApplicationCustomizerApplicationCustomizerStrings';
+import * as React from "react";
+import * as ReactDOM from "react-dom";
+import { SimpleComponent } from "../../SimpleComponent";
 
-const LOG_SOURCE: string = 'MyApplicationCustomizerApplicationCustomizer';
-
-/**
- * If your command set uses the ClientSideComponentProperties JSON input,
- * it will be deserialized into the BaseExtension.properties object.
- * You can define an interface to describe it.
- */
 export interface IMyApplicationCustomizerApplicationCustomizerProperties {
   // This is an example; replace with your own property
   testMessage: string;
 }
 
 /** A Custom Action which can be run during execution of a Client Side Application */
-export default class MyApplicationCustomizerApplicationCustomizer
-  extends BaseApplicationCustomizer<IMyApplicationCustomizerApplicationCustomizerProperties> {
-
+export default class MyApplicationCustomizerApplicationCustomizer extends BaseApplicationCustomizer<
+  IMyApplicationCustomizerApplicationCustomizerProperties
+> {
   @override
   public onInit(): Promise<void> {
-    Log.info(LOG_SOURCE, `Initialized ${strings.Title}`);
+    this.renderPlaceholder(PlaceholderName.Top);
 
-    let message: string = this.properties.testMessage;
-    if (!message) {
-      message = '(No properties were provided.)';
-    }
-
-    Dialog.alert(`Hello from ${strings.Title}:\n\n${message}`);
+    this.renderPlaceholder(PlaceholderName.Bottom);
 
     return Promise.resolve();
+  }
+
+  private renderPlaceholder(placeholderName: PlaceholderName): void {
+    const placeholder: PlaceholderContent = this.context.placeholderProvider.tryCreateContent(
+      placeholderName
+    );
+    if (placeholder && placeholder.domElement) {
+      ReactDOM.render(
+        React.createElement(SimpleComponent, {}),
+        placeholder.domElement
+      );
+    } else {
+      console.log(
+        `Placeholder ${PlaceholderName[placeholderName]} not found on page.`
+      );
+    }
   }
 }

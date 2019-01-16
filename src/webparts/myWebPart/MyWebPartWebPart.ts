@@ -8,6 +8,7 @@ import {
 } from '@microsoft/sp-webpart-base';
 
 import * as strings from 'MyWebPartWebPartStrings';
+import { SimpleComponent } from "../../SimpleComponent";
 import MyWebPart from './components/MyWebPart';
 import { IMyWebPartProps } from './components/IMyWebPartProps';
 
@@ -18,14 +19,10 @@ export interface IMyWebPartWebPartProps {
 export default class MyWebPartWebPart extends BaseClientSideWebPart<IMyWebPartWebPartProps> {
 
   public render(): void {
-    const element: React.ReactElement<IMyWebPartProps > = React.createElement(
-      MyWebPart,
-      {
-        description: this.properties.description
-      }
-    );
-
-    ReactDom.render(element, this.domElement);
+    ReactDom.render(React.createElement(
+      SimpleComponent,
+      {}
+    ), this.domElement);
   }
 
   protected onDispose(): void {
