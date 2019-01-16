@@ -1,0 +1,12 @@
+{
+  "@microsoft/generator-sharepoint": {
+    "version": "1.7.1",
+    "libraryName": "spfx-code-share",
+    "libraryId": "00dd81e1-b178-4c15-8b84-3578b5895f41",
+    "environment": "spo",
+    "packageManager": "npm",
+    "isCreatingSolution": false,
+    "componentType": "extension",
+    "extensionType": "ApplicationCustomizer"
+  }
+}
